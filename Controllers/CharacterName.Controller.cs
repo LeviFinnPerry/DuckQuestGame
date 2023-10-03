@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using DuckQuest.Models;
-using System;
 
 namespace DuckQuest.Controllers
 {
@@ -17,42 +14,26 @@ namespace DuckQuest.Controllers
         }
 
         [HttpGet("generate")]
-        public IActionResult GenerateCharacter()
+        public IActionResult GenerateName()
         {
-            // Check if a character name is already stored in session
             string characterName = _httpContextAccessor.HttpContext.Session.GetString("CharacterName");
 
-            if (string.IsNullOrEmpty(characterName))
-            {
-                // Generate random numbers to select a first name and last name
-                Random random = new Random();
-                int firstNameIndex = random.Next(NameGenerator.FirstNames.Length);
-                int lastNameIndex = random.Next(NameGenerator.LastNames.Length);
+            //Generate random numbers to select a first name and last name
+            Random random = new Random();
+            int firstNameIndex = random.Next(NameGenerator.FirstNames.Length);
+            int lastNameIndex = random.Next(NameGenerator.LastNames.Length);
 
-                // Get the selected first and last names
+            //Get the selected first and last names
                 string firstName = NameGenerator.FirstNames[firstNameIndex];
-                string lastName = NameGenerator.LastNames[lastNameIndex];
+            string lastName = NameGenerator.LastNames[lastNameIndex];
 
-                // Store the generated name in session
-                characterName = $"{firstName} {lastName}";
-                _httpContextAccessor.HttpContext.Session.SetString("CharacterName", characterName);
-            }
+            //Store the generated name in session
+            characterName = $"{firstName} {lastName}";
+            _httpContextAccessor.HttpContext.Session.SetString("CharacterName", characterName);
 
-            return View("GenerateCharacterView");
-        }
 
-        [HttpPost("generate")]
-        public IActionResult GenerateCharacter([FromForm] CharacterNameInputModel inputModel)
-        {
-            // Validate the input model here if needed
-
-            // Store the entered name in a session or temporary storage
-            _httpContextAccessor.HttpContext.Session.SetString("CharacterName", inputModel.Name);
-
-            return Ok(new
-            {
-                Name = inputModel.Name
-            });
+            // Return the character name as JSON
+            return Ok(new { Name = characterName });
         }
 
 

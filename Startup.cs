@@ -19,6 +19,8 @@ namespace DuckQuest
         {
             services.AddControllers();
             services.AddHttpContextAccessor();
+            services.AddMvc();
+            services.AddSession();
 
             // Add any other services you need here.
         }
@@ -37,11 +39,11 @@ namespace DuckQuest
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

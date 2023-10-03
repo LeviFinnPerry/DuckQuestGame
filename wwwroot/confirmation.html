@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Confirmation</title>
+</head>
+<body>
+    <h1>Character Confirmation</h1>
+
+    <div id="characterDetails">
+        <p>Name: <span id="name"></span></p>
+        <p>Quickness: <span id="quickness"></span></p>
+        <p>Ugly: <span id="ugly"></span></p>
+        <p>Arcana: <span id="arcana"></span></p>
+        <p>Cool: <span id="cool"></span></p>
+        <p>Kismit: <span id="kismit"></span></p>
+    </div>
+
+    <script>
+        // JavaScript code to retrieve and display character details goes here
+        const characterData = JSON.parse(sessionStorage.getItem('character'));
+
+        if (characterData) {
+            document.getElementById('name').textContent = characterData.name;
+            document.getElementById('quickness').textContent = characterData.quickness;
+            document.getElementById('ugly').textContent = characterData.ugly;
+            document.getElementById('arcana').textContent = characterData.arcana;
+            document.getElementById('cool').textContent = characterData.cool;
+            document.getElementById('kismit').textContent = characterData.kismit;
+        } else {
+            document.getElementById('characterDetails').textContent = 'No character data available.';
+        }
+    </script>
+</body>
+</html>

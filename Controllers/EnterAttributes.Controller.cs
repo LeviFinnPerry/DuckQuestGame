@@ -18,7 +18,7 @@ namespace DuckQuest.Controllers
             if (string.IsNullOrEmpty(characterName))
             {
                 // If the name is not stored, redirect back to the name input step
-                return RedirectToAction("GenerateCharacter");
+                return RedirectToAction("GenerateName");
             }
 
             // Return the HTML form for entering other attributes
