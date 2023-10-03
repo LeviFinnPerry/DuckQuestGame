@@ -1,6 +1,10 @@
-﻿namespace YourProjectName.Models
+﻿namespace DuckQuest.Models
 {
-    public class Character
+    public class CharacterNameInputModel
+    {
+        public string Name { get; set; }
+    }
+    public class CharacterRepository
     {
         public int Id { get; set; }
         public string Name { get; set; }

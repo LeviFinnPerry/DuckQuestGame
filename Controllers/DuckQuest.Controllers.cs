@@ -1,71 +1,36 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using YourProjectName.Models;
+using DuckQuest.Models;
 
-namespace YourProjectName.Controllers
+namespace DuckQuest.Controllers
 {
-    [Route("api/character")]
+    [Route("character")]
     [ApiController]
     public class CharacterController : ControllerBase
     {
-        private readonly ICharacterRepository _characterRepository;
-
-        public CharacterController(ICharacterRepository characterRepository)
+        [HttpGet("generate")]
+        public ActionResult<Character> GenerateCharacter()
         {
-            _characterRepository = characterRepository;
-        }
+            // Implement logic to generate a random character
+            var character = GenerateRandomCharacter();
 
-        // GET: api/character
-        [HttpGet]
-        public ActionResult<Character> Get()
-        {
-            // Implement logic to retrieve the character from the repository
-            var character = _characterRepository.GetCharacter();
-            if (character == null)
-            {
-                return NotFound();
-            }
+            // You can return the character directly or return it as JSON
+            // return character;
             return Ok(character);
         }
 
-        // PUT: api/character
-        [HttpPut]
-        public ActionResult<Character> Put([FromBody] Character character)
+        private Character GenerateRandomCharacter()
         {
-            // Implement logic to update the character in the repository
-            if (character == null)
+            // Implement logic to generate a random character here
+            // You can set random values for each attribute as needed
+
+            var randomCharacter = new Character
             {
-                return BadRequest();
-            }
+                Id = 1,
+                Name = "RandomCharacter",
+                // Set other attributes with random values
+            };
 
-            // Ensure the character exists and then update its attributes
-            var existingCharacter = _characterRepository.GetCharacter();
-            if (existingCharacter == null)
-            {
-                return NotFound();
-            }
-
-            existingCharacter.Name = character.Name;
-            existingCharacter.Quickness = character.Quickness;
-            existingCharacter.Ugly = character.Ugly;
-            existingCharacter.Arcana = character.Arcana;
-            existingCharacter.Cool = character.Cool;
-            existingCharacter.Kismit = character.Kismit;
-            existingCharacter.Kudos = character.Kudos;
-            existingCharacter.Heart = character.Heart;
-            existingCharacter.Psyche = character.Psyche;
-            existingCharacter.Armour = character.Armour;
-            existingCharacter.Equipment = character.Equipment;
-            existingCharacter.TreasureDucats = character.TreasureDucats;
-            existingCharacter.Pets = character.Pets;
-            existingCharacter.Quirks = character.Quirks;
-            existingCharacter.Quests = character.Quests;
-
-            // Save the updated character
-            _characterRepository.UpdateCharacter(existingCharacter);
-
-            return Ok(existingCharacter);
+            return randomCharacter;
         }
-
-        // Add other CRUD operations (POST, DELETE) as needed
     }
 }

@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create D&D Character</title>
+</head>
+<body>
+    <h1>Create D&D Character</h1>
+    <form action="/api/character" method="POST" onsubmit="return validateAttributes()">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br>
+
+        <!-- Add a button to generate a random name -->
+        <div>
+            <button type="button" onclick="generateRandomName()">Generate Random Name</button><br>
+        </div>
+
+        <!-- Add input fields for Quack Attributes -->
+        <label for="quickness">Quickness (1-5):</label>
+        <input type="number" id="quickness" name="quickness" min="1" max="5" required><br>
+
+        <label for="ugly">Ugly (1-5):</label>
+        <input type="number" id="ugly" name="ugly" min="1" max="5" required><br>
+
+        <label for="arcana">Arcana (1-5):</label>
+        <input type="number" id="arcana" name="arcana" min="1" max="5" required><br>
+
+        <label for="cool">Cool (1-5):</label>
+        <input type="number" id="cool" name="cool" min="1" max="5" required><br>
+
+        <label for="kismet">Kismet (1-5):</label>
+        <input type="number" id="kismet" name="kismet" min="1" max="5" required><br>
+
+        <!-- Add a button to save character attributes -->
+        <button type="button" onclick="saveCharacterAttributes()">Save Character Attributes</button><br>
+
+        <input type="submit" value="Create Character">
+    </form>
+
+    <script>
+        function generateRandomName() {
+            console.log("generateRandomName function called"); // Log when the function is called
+
+            fetch('/api/character/generate')
+                .then(response => response.json())
+                .then(data => {
+                    console.log("API Response:", data); // Log the response data
+                    document.getElementById('name').value = data.name;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+
+        function validateAttributes() {
+            const attributes = ['quickness', 'ugly', 'arcana', 'cool', 'kismet'];
+            const attributeValues = {};
+
+            for (const attribute of attributes) {
+                const value = document.getElementById(attribute).value;
+
+                if (attributeValues[value]) {
+                    alert(`Attributes must have unique values. ${attribute} is a repeat value.`);
+                    return false;
+                }
+
+                attributeValues[value] = true;
+            }
+
+            return true;
+        }
+
+        function saveCharacterAttributes() {
+            const name = document.getElementById('name').value;
+            const quickness = document.getElementById('quickness').value;
+            const ugly = document.getElementById('ugly').value;
+            const arcana = document.getElementById('arcana').value;
+            const cool = document.getElementById('cool').value;
+            const kismet = document.getElementById('kismet').value;
+
+            // Check for unique attribute values
+            const attributeValues = [quickness, ugly, arcana, cool, kismet];
+            const uniqueAttributeValues = [...new Set(attributeValues)];
+
+            if (uniqueAttributeValues.length !== attributeValues.length) {
+                alert('Attributes must have unique values.');
+                return;
+            }
+
+            // Create an object with the character attributes
+            const characterAttributes = {
+                name,
+                quickness,
+                ugly,
+                arcana,
+                cool,
+                kismet
+            };
+
+            // Make an AJAX request to save the character attributes
+            fetch('/api/character/enterattributes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(characterAttributes)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response if needed
+                    alert(data.Message);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
